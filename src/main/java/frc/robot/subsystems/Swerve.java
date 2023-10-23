@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.SwerveModule;
+import frc.lib.math.Conversions;
 import frc.robot.Constants;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -118,6 +119,8 @@ public class Swerve extends SubsystemBase {
 
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
+            SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Falcon Tick", mod.getAngle().getDegrees());
+            SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Offset Included", mod.getCanCoderCalibrated().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
         }

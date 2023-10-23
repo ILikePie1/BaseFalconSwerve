@@ -41,7 +41,8 @@ public class SwerveModule {
         mDriveMotor = new TalonFX(moduleConstants.driveMotorID);
         configDriveMotor();
 
-        lastAngle = getState().angle;
+        // lastAngle = getState().angle;
+        lastAngle = new Rotation2d(0);
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
@@ -66,15 +67,20 @@ public class SwerveModule {
         Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed * 0.01)) ? lastAngle : desiredState.angle; //Prevent rotating module if speed is less then 1%. Prevents Jittering.
         
         mAngleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle.getDegrees(), Constants.Swerve.angleGearRatio));
+        // mAngleMotor.set(ControlMode.Position, 0);
         lastAngle = angle;
     }
 
-    private Rotation2d getAngle(){
+    public Rotation2d getAngle(){
         return Rotation2d.fromDegrees(Conversions.falconToDegrees(mAngleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio));
     }
 
     public Rotation2d getCanCoder(){
         return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
+    }
+
+    public Rotation2d getCanCoderCalibrated() {
+        return(getCanCoder().minus(angleOffset));
     }
 
     public void resetToAbsolute(){
